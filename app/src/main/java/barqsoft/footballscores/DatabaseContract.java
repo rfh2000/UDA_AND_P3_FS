@@ -26,6 +26,8 @@ public class DatabaseContract
         //public static Uri SCORES_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH)
                 //.build();
 
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(DatabaseContract.BASE_CONTENT_URI, SCORES_TABLE);
+
         //Types
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH;

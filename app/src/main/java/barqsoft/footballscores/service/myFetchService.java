@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.Vector;
 
+import barqsoft.footballscores.BuildConfig;
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
 
@@ -49,12 +51,18 @@ public class myFetchService extends IntentService
     {
         //Creating fetch URL
         final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
+
+        // Adding alternate fetch url
+        //final String BASE_URL = "http://api.football-data.org/v1/fixtures"; //Base URL
+
         final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
         //final String QUERY_MATCH_DAY = "matchday";
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
                 appendQueryParameter(QUERY_TIME_FRAME, timeFrame).build();
-        //Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
+        Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
+        ///////////////////
+
         HttpURLConnection m_connection = null;
         BufferedReader reader = null;
         String JSON_data = null;
@@ -63,7 +71,7 @@ public class myFetchService extends IntentService
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
             m_connection.setRequestMethod("GET");
-            m_connection.addRequestProperty("X-Auth-Token",getString(R.string.api_key));
+            m_connection.addRequestProperty("X-Auth-Token", BuildConfig.FOOTBALL_DATA_API_KEY);
             m_connection.connect();
 
             // Read the input stream into a String
@@ -87,10 +95,15 @@ public class myFetchService extends IntentService
                 return;
             }
             JSON_data = buffer.toString();
+            Log.v(LOG_TAG, "JSON String is " + JSON_data);
         }
         catch (Exception e)
         {
-            Log.e(LOG_TAG,"Exception here" + e.getMessage());
+            Log.e(LOG_TAG,"Exception here " + e.getMessage());
+
+            // Note the log errors
+            //      http://api.football-data.org/alpha/fixtures?timeFrame=n2
+            //      http://api.football-data.org/alpha/fixtures?timeFrame=p2
         }
         finally {
             if(m_connection != null)
@@ -124,6 +137,7 @@ public class myFetchService extends IntentService
             } else {
                 //Could not Connect
                 Log.d(LOG_TAG, "Could not connect to server.");
+                // This is also showing an error
             }
         }
         catch(Exception e)
@@ -265,12 +279,13 @@ public class myFetchService extends IntentService
             inserted_data = mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
-            //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+            Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }
         catch (JSONException e)
         {
             Log.e(LOG_TAG,e.getMessage());
         }
+
 
     }
 }

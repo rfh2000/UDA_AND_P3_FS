@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Created by yehya khaled on 2/25/2015.
@@ -98,7 +99,7 @@ public class ScoresProvider extends ContentProvider
         Cursor retCursor;
         //Log.v(FetchScoreTask.LOG_TAG,uri.getPathSegments().toString());
         int match = match_uri(uri);
-        //Log.v(FetchScoreTask.LOG_TAG,SCORES_BY_LEAGUE);
+        //Log.v(FetchScoreTask.LOG_TAG, SCORES_BY_LEAGUE);
         //Log.v(FetchScoreTask.LOG_TAG,selectionArgs[0]);
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(match));
         switch (match)

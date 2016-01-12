@@ -4,14 +4,22 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.MainScreenFragment;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.ScoresDBHelper;
 
 /**
  * Created by R.Pendlebury on 11/01/2016.
@@ -26,10 +34,15 @@ public class FootballRemoteViews extends RemoteViewsService {
 
 class FootballRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final int mCount = 10;
     private List<WidgetItem> mWidgetItems = new ArrayList<WidgetItem>();
     private Context mContext;
     private int mAppWidgetId;
+
+    private Cursor mCursor;
+    private static int mCount;
+    //private static final int mCount = 10;
+    private String[] searchDate = new String[1];
+    private static final String LOG_TAG = FootballRemoteViewsFactory.class.getSimpleName();
 
     public FootballRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
@@ -42,9 +55,39 @@ class FootballRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
         // In onCreate() you setup any connections / cursors to your data source. Heavy lifting,
         // for example downloading or creating content etc, should be deferred to onDataSetChanged()
         // or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
-        for (int i = 0; i < mCount; i++) {
-            mWidgetItems.add(new WidgetItem(i + "!"));
+
+        Cursor c;
+        Date testDate = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        searchDate[0] = simpleDateFormat.format(testDate);
+
+        c = mContext.getContentResolver().query(
+                DatabaseContract.scores_table.buildScoreWithDate(),
+                null,
+                null,
+                searchDate,
+                null);
+        mCount = c.getCount();
+
+        if (c != null && c.getCount() > 0) {
+            if (c.moveToFirst()) {
+                do {
+                    String s = c.getString(3) +
+                                        " " + c.getString(6) +
+                                        " --- " +
+                                        c.getString(7) +
+                                        " " + c.getString(4);
+                    //mWidgetItems.add(new WidgetItem(c.getString(3) + " --- " + c.getString(1) + " --- " + c.getString(4)));
+                    mWidgetItems.add(new WidgetItem(s));
+                } while (c.moveToNext());
+            }
         }
+        c.close();
+
+        for (int i = 0; i < mCount; i++) {
+            //mWidgetItems.add(new WidgetItem(i + "!"));
+        }
+
 
         // We sleep for 3 seconds here to show how the empty view appears in the interim.
         // The empty view is set in the StackWidgetProvider and should be a sibling of the
@@ -92,7 +135,7 @@ class FootballRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
         // synchronously. A loading view will show up in lieu of the actual contents in the
         // interim.
         try {
-            System.out.println("Loading view " + position);
+            //System.out.println("Loading view " + position);
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -132,5 +175,6 @@ class FootballRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
         // from the network, etc., it is ok to do it here, synchronously. The widget will remain
         // in its current state while work is being done here, so you don't need to worry about
         // locking up the widget.
+
     }
 }
