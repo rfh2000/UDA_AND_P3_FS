@@ -5,12 +5,21 @@ package barqsoft.footballscores;
  */
 public class Utilies
 {
-    public static final int SERIE_A = 357;
+//    public static final int SERIE_A = 357;
+//    public static final int PREMIER_LEAGUE = 398;
+//    //public static final int PREMIER_LEAGUE = 354;
+//    public static final int CHAMPIONS_LEAGUE = 362;
+//    public static final int PRIMERA_DIVISION = 358;
+//    public static final int BUNDESLIGA = 351;
+
+    public static final int BUNDESLIGA = 394;
+    public static final int LIGUE1 = 396;
     public static final int PREMIER_LEAGUE = 398;
-    //public static final int PREMIER_LEAGUE = 354;
-    public static final int CHAMPIONS_LEAGUE = 362;
-    public static final int PRIMERA_DIVISION = 358;
-    public static final int BUNDESLIGA = 351;
+    public static final int PRIMERA_DIVISION = 399;
+    public static final int SERIE_A = 401;
+    public static final int EREDIVISIE= 404;
+    public static final int PRIMEIRA_LIGA = 402;
+    public static final int CHAMPIONS_LEAGUE = 405;
 
     public static String getLeague(int league_num)
     {
@@ -21,8 +30,25 @@ public class Utilies
             case CHAMPIONS_LEAGUE : return "UEFA Champions League";
             case PRIMERA_DIVISION : return "Primera Division";
             case BUNDESLIGA : return "Bundesliga";
+            case LIGUE1 : return "Ligue 1";
+            case EREDIVISIE : return "Eredivisie";
+            case PRIMEIRA_LIGA : return "Primeira Liga";
             default: return "Not known League Please report";
         }
+
+//        final String BUNDESLIGA1 = "394";
+//        final String BUNDESLIGA2 = "395";
+//        final String LIGUE1 = "396";
+//        final String LIGUE2 = "397";
+//        final String PREMIER_LEAGUE = "398";
+//        final String PRIMERA_DIVISION = "399";
+//        final String SEGUNDA_DIVISION = "400";
+//        final String SERIE_A = "401";
+//        final String PRIMEIRA_LIGA = "402";
+//        final String Bundesliga3 = "403";
+//        final String EREDIVISIE = "404";
+//        final String CHAMPIONS_LEAGUE = "405";
+
     }
     public static String getMatchDay(int match_day,int league_num)
     {
