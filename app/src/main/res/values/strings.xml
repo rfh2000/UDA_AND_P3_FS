@@ -38,4 +38,7 @@
     <string name="appwidget_text">Latest scores...</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_view_text">This is the empty view</string>
+
+    <!-- Content descriptions -->
+    <string name="cs_share">Share</string>
 </resources>

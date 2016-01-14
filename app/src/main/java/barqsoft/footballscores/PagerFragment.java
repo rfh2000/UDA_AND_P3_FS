@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class PagerFragment extends Fragment
     public ViewPager mPagerHandler;
     private myPageAdapter mPagerAdapter;
     private MainScreenFragment[] viewFragments = new MainScreenFragment[5];
+    private static final String LOG_TAG = PagerFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -65,6 +67,8 @@ public class PagerFragment extends Fragment
         @Override
         public CharSequence getPageTitle(int position)
         {
+            Log.v(LOG_TAG, "Title is " +  getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000)));
+
             return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000));
         }
         public String getDayName(Context context, long dateInMillis) {
