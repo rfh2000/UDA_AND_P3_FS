@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_item"
-    android:layout_width="300dp"
-    android:layout_height="30dp"
-    android:gravity="center"
-    android:background="@drawable/widget_item_background"
-    android:textColor="#FFFFFF"
-    android:textStyle="bold"
-    android:textSize="16sp" />
+<LinearLayout
+    android:id="@+id/widget"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- <ImageView
+        android:id="@+id/widget_icon"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="4" />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/widget_item2"
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:background="@drawable/widget_item_background"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:text="TUES"/> -->
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/widget_item"
+        android:layout_weight="20"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:background="@drawable/widget_item_background"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="12sp" />
+
+</LinearLayout>

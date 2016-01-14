@@ -30,9 +30,10 @@ import barqsoft.footballscores.R;
 /**
  * Created by yehya khaled on 3/2/2015.
  */
-public class myFetchService extends IntentService
-{
+public class myFetchService extends IntentService {
+
     public static final String LOG_TAG = "myFetchService";
+    public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
     public myFetchService()
     {
         super("myFetchService");
@@ -43,6 +44,7 @@ public class myFetchService extends IntentService
     {
         getData("n2");
         getData("p2");
+        updateWidgets();
 
         return;
     }
@@ -60,7 +62,7 @@ public class myFetchService extends IntentService
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
                 appendQueryParameter(QUERY_TIME_FRAME, timeFrame).build();
-        Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
+        //Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
         ///////////////////
 
         HttpURLConnection m_connection = null;
@@ -95,7 +97,7 @@ public class myFetchService extends IntentService
                 return;
             }
             JSON_data = buffer.toString();
-            Log.v(LOG_TAG, "JSON String is " + JSON_data);
+            //Log.v(LOG_TAG, "JSON String is " + JSON_data);
         }
         catch (Exception e)
         {
@@ -285,7 +287,15 @@ public class myFetchService extends IntentService
         {
             Log.e(LOG_TAG,e.getMessage());
         }
+    }
 
+    private void updateWidgets() {
+
+        Context context = getApplicationContext();
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
 
     }
 }
