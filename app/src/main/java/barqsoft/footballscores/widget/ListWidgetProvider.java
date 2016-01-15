@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 
 import barqsoft.footballscores.MainActivity;
 import barqsoft.footballscores.R;
-import barqsoft.footballscores.service.myFetchService;
+import barqsoft.footballscores.service.FetchService;
 
 /**
  * Created by R.Pendlebury on 13/01/2016.
@@ -56,7 +56,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
-        if (myFetchService.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+        if (FetchService.ACTION_DATA_UPDATED.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));

@@ -19,8 +19,8 @@ import java.util.Date;
 /**
  * Created by yehya khaled on 2/27/2015.
  */
-public class PagerFragment extends Fragment
-{
+public class PagerFragment extends Fragment {
+
     public static final int NUM_PAGES = 5;
     public ViewPager mPagerHandler;
     private myPageAdapter mPagerAdapter;
@@ -28,20 +28,20 @@ public class PagerFragment extends Fragment
     private static final String LOG_TAG = PagerFragment.class.getSimpleName();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         mPagerHandler = (ViewPager) rootView.findViewById(R.id.pager);
         mPagerAdapter = new myPageAdapter(getChildFragmentManager());
-        for (int i = 0;i < NUM_PAGES;i++)
+        for (int i = 0 ; i < NUM_PAGES ; i++)
         {
-            Date fragmentdate = new Date(System.currentTimeMillis()+((i-2)*86400000));
-            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+            Date fragmentDate = new Date(System.currentTimeMillis()+((i-2)*86400000));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             viewFragments[i] = new MainScreenFragment();
-            viewFragments[i].    setFragmentDate(mformat.format(fragmentdate));
+            viewFragments[i].setFragmentDate(simpleDateFormat.format(fragmentDate));
         }
         mPagerHandler.setAdapter(mPagerAdapter);
-        mPagerHandler.setCurrentItem(MainActivity.current_fragment);
+        mPagerHandler.setCurrentItem(MainActivity.currentFragment);
         return rootView;
     }
 
@@ -65,14 +65,14 @@ public class PagerFragment extends Fragment
         }
         // Returns the page title for the top indicator
         @Override
-        public CharSequence getPageTitle(int position)
-        {
-            Log.v(LOG_TAG, "Title is " +  getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000)));
+        public CharSequence getPageTitle(int position) {
 
+            Log.v(LOG_TAG, "Title is " +  getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000)));
             return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000));
         }
+
         public String getDayName(Context context, long dateInMillis) {
-            // If the date is today, return the localized version of "Today" instead of the actual
+            // If the matchDate is today, return the localized version of "Today" instead of the actual
             // day name.
 
             Time t = new Time();

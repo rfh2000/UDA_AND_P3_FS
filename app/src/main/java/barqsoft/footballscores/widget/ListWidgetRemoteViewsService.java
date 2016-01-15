@@ -4,21 +4,15 @@ import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.util.Log;
-import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.MainActivity;
@@ -154,7 +148,7 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
                     String[] tmpDate = new String[1];
                     tmpDate[0] = searchDate[i];
                     data = getContentResolver().query(
-                            DatabaseContract.scores_table.buildScoreWithDate(),
+                            DatabaseContract.ScoresTable.buildScoreWithDate(),
                             null,
                             null,
                             tmpDate,
