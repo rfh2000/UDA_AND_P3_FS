@@ -11,7 +11,7 @@ import barqsoft.footballscores.DatabaseContract.ScoresTable;
  */
 public class ScoresDBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "Scores.db";
+    public static final String DATABASE_NAME = "FootballScores.db";
     private static final int DATABASE_VERSION = 2;
 
     public ScoresDBHelper(Context context) {

@@ -78,8 +78,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader)
-    {
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
     }
 

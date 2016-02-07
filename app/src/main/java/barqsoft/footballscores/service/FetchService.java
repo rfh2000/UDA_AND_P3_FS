@@ -31,8 +31,6 @@ import barqsoft.footballscores.R;
  */
 public class FetchService extends IntentService {
 
-    // Check variable/method names further in this class
-
     public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
 
     // These are the arguments for fetching matchdays from the API
@@ -98,10 +96,6 @@ public class FetchService extends IntentService {
         catch (Exception e)
         {
             Log.e(LOG_TAG,"Exception here " + e.getMessage());
-
-            // Note the log errors
-            //      http://api.football-data.org/alpha/fixtures?timeFrame=n2
-            //      http://api.football-data.org/alpha/fixtures?timeFrame=p2
         }
         finally {
             if(m_connection != null)
@@ -133,7 +127,6 @@ public class FetchService extends IntentService {
             } else {
                 //Could not Connect
                 Log.d(LOG_TAG, "Could not connect to server.");
-                // This is also showing an error
             }
         }
         catch(Exception e)
@@ -166,7 +159,6 @@ public class FetchService extends IntentService {
         final String LINKS = "_links";
         final String SOCCER_SEASON = "soccerseason";
         final String SELF = "self";
-        //final String MATCH_DATE = "matchDate";
         final String MATCH_DATE = "date";
         final String HOME_TEAM = "homeTeamName";
         final String AWAY_TEAM = "awayTeamName";
@@ -230,10 +222,10 @@ public class FetchService extends IntentService {
                     match_date.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                     try {
-                        Date parseddate = match_date.parse(mDate+mTime);
+                        Date parseDate = match_date.parse(mDate+mTime);
                         SimpleDateFormat new_date = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
                         new_date.setTimeZone(TimeZone.getDefault());
-                        mDate = new_date.format(parseddate);
+                        mDate = new_date.format(parseDate);
                         mTime = mDate.substring(mDate.indexOf(":") + 1);
                         mDate = mDate.substring(0,mDate.indexOf(":"));
 
@@ -273,8 +265,6 @@ public class FetchService extends IntentService {
             values.toArray(insert_data);
             inserted_data = mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
-
-            ////Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }
         catch (JSONException e)
         {

@@ -36,22 +36,6 @@
         </activity>
         <service android:name=".service.FetchService" />
 
-        <!-- <receiver android:name=".widget.FootballWidgetProvider" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.ACTION_DATA_UPDATED" />
-            </intent-filter>
-            <meta-mCursor android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget_info" />
-        </receiver>
-
-        <service android:name=".widget.FootballWidgetIntentService" />
-
-        <service android:name=".widget.FootballRemoteViews"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false"/> -->
-
-
         <receiver android:name=".widget.ListWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -65,7 +49,6 @@
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false"
             android:grantUriPermissions="true"/>
-
 
     </application>
 

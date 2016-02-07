@@ -1,5 +1,6 @@
 package barqsoft.footballscores;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -71,4 +72,5 @@ public class MainActivity extends ActionBarActivity {
         mPagerFragment = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mPagerFragment");
         super.onRestoreInstanceState(savedInstanceState);
     }
+
 }

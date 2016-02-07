@@ -45,8 +45,8 @@ public class PagerFragment extends Fragment {
         return rootView;
     }
 
-    private class myPageAdapter extends FragmentStatePagerAdapter
-    {
+    private class myPageAdapter extends FragmentStatePagerAdapter {
+
         @Override
         public Fragment getItem(int i) {
             return mViewFragments[i];

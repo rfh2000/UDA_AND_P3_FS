@@ -25,8 +25,6 @@ import barqsoft.footballscores.R;
  */
 public class ListWidgetRemoteViewsService extends RemoteViewsService {
 
-    private static final String LOG_TAG = ListWidgetRemoteViewsService.class.getSimpleName();
-
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
