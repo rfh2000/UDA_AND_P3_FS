@@ -1,5 +1,6 @@
 package barqsoft.footballscores;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yehya khaled on 2/27/2015.
@@ -37,6 +39,9 @@ public class PagerFragment extends Fragment {
         {
             Date fragmentDate = new Date(System.currentTimeMillis()+((i-2)*86400000));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            //Log.v(LOG_TAG, "Fragment date is " + simpleDateFormat.format(fragmentDate));
+
             viewFragments[i] = new MainScreenFragment();
             viewFragments[i].setFragmentDate(simpleDateFormat.format(fragmentDate));
         }
@@ -48,33 +53,31 @@ public class PagerFragment extends Fragment {
     private class myPageAdapter extends FragmentStatePagerAdapter
     {
         @Override
-        public Fragment getItem(int i)
-        {
+        public Fragment getItem(int i) {
             return viewFragments[i];
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return NUM_PAGES;
         }
 
-        public myPageAdapter(FragmentManager fm)
-        {
+        public myPageAdapter(FragmentManager fm) {
             super(fm);
         }
+
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-
-            Log.v(LOG_TAG, "Title is " +  getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000)));
-            return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000));
+//            Log.v(LOG_TAG, "Title is " +  getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000)));
+//            return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000));
+            //Log.v(LOG_TAG, "Title is " +  getDayName(getContext(), System.currentTimeMillis()+((position-2)*86400000)));
+            return getDayName(getContext(),System.currentTimeMillis()+((position-2)*86400000));
         }
 
         public String getDayName(Context context, long dateInMillis) {
             // If the matchDate is today, return the localized version of "Today" instead of the actual
             // day name.
-
             Time t = new Time();
             t.setToNow();
             int julianDay = Time.getJulianDay(dateInMillis, t.gmtoff);
@@ -84,12 +87,10 @@ public class PagerFragment extends Fragment {
             } else if ( julianDay == currentJulianDay +1 ) {
                 return context.getString(R.string.tomorrow);
             }
-             else if ( julianDay == currentJulianDay -1)
-            {
+             else if ( julianDay == currentJulianDay -1) {
                 return context.getString(R.string.yesterday);
             }
-            else
-            {
+            else {
                 Time time = new Time();
                 time.setToNow();
                 // Otherwise, the format is just the day of the week (e.g "Wednesday".

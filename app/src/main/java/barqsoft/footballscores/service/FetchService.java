@@ -36,32 +36,30 @@ public class FetchService extends IntentService {
     public static final String LOG_TAG = "FetchService";
     public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
 
+    // These are the arguments for fetching matchdays from the API
+    static final String FUTURE_DAYS = "n3";
+    static final String PAST_DAYS = "p2";
+
     public FetchService() {
         super("FetchService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        getData("n3"); // Name as variables and comment
-        getData("p2");
+        // Fetch the data from the API
+        getData(FUTURE_DAYS);
+        getData(PAST_DAYS);
         updateWidgets();
-        return; //?????
+        return;
     }
 
     private void getData (String timeFrame) {
         //Creating fetch URL
         final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
-
-        // Adding alternate fetch url
-        //final String BASE_URL = "http://api.football-data.org/v1/fixtures"; //Base URL
-
         final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
-        //final String QUERY_MATCH_DAY = "matchday";
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
                 appendQueryParameter(QUERY_TIME_FRAME, timeFrame).build();
-        //Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
-        ///////////////////
 
         HttpURLConnection m_connection = null;
         BufferedReader reader = null;
@@ -95,7 +93,6 @@ public class FetchService extends IntentService {
                 return;
             }
             JSON_data = buffer.toString();
-            Log.v(LOG_TAG, "JSON String is " + JSON_data);
         }
         catch (Exception e)
         {
@@ -131,8 +128,6 @@ public class FetchService extends IntentService {
                     processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
                     return;
                 }
-
-
                 processJSONdata(JSON_data, getApplicationContext(), true);
             } else {
                 //Could not Connect
@@ -159,7 +154,7 @@ public class FetchService extends IntentService {
         final String SEGUNDA_DIVISION = "400";
         final String SERIE_A = "401";
         final String PRIMEIRA_LIGA = "402";
-        final String Bundesliga3 = "403";
+        final String BUNDESLIGA3 = "403";
         final String EREDIVISIE = "404";
         final String CHAMPIONS_LEAGUE = "405";
 
@@ -190,7 +185,6 @@ public class FetchService extends IntentService {
         String match_id = null;
         String match_day = null;
 
-
         try {
             JSONArray matches = new JSONObject(JSONdata).getJSONArray(FIXTURES);
 
@@ -211,6 +205,7 @@ public class FetchService extends IntentService {
                         League.equals(SERIE_A)             ||
                         League.equals(BUNDESLIGA1)         ||
                         League.equals(BUNDESLIGA2)         ||
+                        League.equals(BUNDESLIGA3)         ||
                         League.equals(PRIMERA_DIVISION)    ||
                         League.equals(LIGUE1)              ||
                         League.equals(LIGUE2)              ||
@@ -278,7 +273,7 @@ public class FetchService extends IntentService {
             inserted_data = mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
-            Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+            ////Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }
         catch (JSONException e)
         {

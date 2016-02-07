@@ -2,10 +2,13 @@ package barqsoft.footballscores.widget;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.Build;
+import android.text.format.Time;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -33,6 +36,7 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
             private Cursor data = null;
             private static final int NUM_DAYS = 5;
             private String[] searchDate = new String[NUM_DAYS];
+            private String currentDayName;
             private int mCount;
             private boolean hasResultHeader = false;
             private static final int manchesterUnited = R.drawable.manchester_united;
@@ -143,7 +147,7 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
                     searchDate[i] = simpleDateFormat.format(tmpDate);
                 }
 
-                matchList.add("UPCOMING FIXTURES");
+                //matchList.add("UPCOMING FIXTURES");
                 for (int i = searchDate.length-1 ; i > -1 ; i--){
                     String[] tmpDate = new String[1];
                     tmpDate[0] = searchDate[i];
@@ -154,6 +158,13 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
                             tmpDate,
                             null);
 
+                    //Log.v(LOG_TAG, "The date is " + tmpDate[0]);
+                    //Date anotherDate = new Date(System.currentTimeMillis()+((i-2)*86400000));
+                    //Log.v(LOG_TAG, "The day name is " + getDayName(getApplicationContext(), System.currentTimeMillis()+((i-2)*86400000)));
+
+                    String dayName = getDayName(getApplicationContext(), System.currentTimeMillis()+((i-2)*86400000));
+                    matchList.add(dayName);
+
                     if (data != null && data.getCount() > 0) {
                         if (data.moveToFirst()) {
                             do {
@@ -162,11 +173,57 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
                                 if (data.getString(6).equals("-1") && data.getString(7).equals("-1")){
                                     midString = "v";
                                 } else {
-                                    if (!hasResultHeader) {
-                                        matchList.add("PREVIOUS RESULTS");
-                                        hasResultHeader = true;
-                                        mCount++;
-                                    }
+//                                    if (!hasResultHeader) {
+//                                        matchList.add("PREVIOUS RESULTS");
+//                                        hasResultHeader = true;
+//                                        mCount++;
+//                                    }
+//                                    if (dayName != currentDayName) {
+//                                        switch (dayName) {
+//                                            case "Monday":
+//                                                matchList.add("Monday");
+//                                                currentDayName = "Monday";
+//                                                break;
+//                                            case "Tuesday":
+//                                                matchList.add("Tuesday");
+//                                                currentDayName = "Tuesday";
+//                                                break;
+//                                            case "Wednesday":
+//                                                matchList.add("Wednesday");
+//                                                currentDayName = "Wednesday";
+//                                                break;
+//                                            case "Thursday":
+//                                                matchList.add("Thursday");
+//                                                currentDayName = "Thursday";
+//                                                break;
+//                                            case "Friday":
+//                                                matchList.add("Friday");
+//                                                currentDayName = "Friday";
+//                                                break;
+//                                            case "Saturday":
+//                                                matchList.add("Saturday");
+//                                                currentDayName = "Saturday";
+//                                                break;
+//                                            case "Sunday":
+//                                                matchList.add("Sunday");
+//                                                currentDayName = "Sunday";
+//                                                break;
+//                                            case "Yesterday":
+//                                                matchList.add("Yesterday");
+//                                                currentDayName = "Yesterday";
+//                                                break;
+//                                            case "Today":
+//                                                matchList.add("Today");
+//                                                currentDayName = "Today";
+//                                                break;
+//                                            case "Tomorrow":
+//                                                matchList.add("Tomorrow");
+//                                                currentDayName = "Tomorrow";
+//                                                break;
+//                                            default:
+//                                                break;
+//                                        }
+//                                    }
                                     midString =  data.getString(6) + " - " + data.getString(7);
                                 }
                                 String s = data.getString(3) +
@@ -181,7 +238,33 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
                 }
                 return matchList;
             }
+
+            public String getDayName(Context context, long dateInMillis) {
+                // If the matchDate is today, return the localized version of "Today" instead of the actual
+                // day name.
+                Time t = new Time();
+                t.setToNow();
+                int julianDay = Time.getJulianDay(dateInMillis, t.gmtoff);
+                int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), t.gmtoff);
+                if (julianDay == currentJulianDay) {
+                    return context.getString(R.string.today);
+                } else if ( julianDay == currentJulianDay +1 ) {
+                    return context.getString(R.string.tomorrow);
+                }
+                else if ( julianDay == currentJulianDay -1) {
+                    return context.getString(R.string.yesterday);
+                }
+                else {
+                    Time time = new Time();
+                    time.setToNow();
+                    // Otherwise, the format is just the day of the week (e.g "Wednesday".
+                    SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+                    return dayFormat.format(dateInMillis);
+                }
+            }
         };
+
+
     }
 }
 

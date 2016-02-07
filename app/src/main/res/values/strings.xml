@@ -3,24 +3,32 @@
 
     <string name="app_name">Football Scores</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="test_text">Test</string>
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="tomorrow">Tomorrow</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="test_text" translatable="false">Test</string>
+    <string name="today" translatable="false">Today</string>
+    <string name="yesterday" translatable="false">Yesterday</string>
+    <string name="tomorrow" translatable="false">Tomorrow</string>
     <string name="champions_league">UEFA Champions League</string>
     <string name="bundesliga">Bundesliga</string>
+    <string name="bundesliga2">Bundesliga 2</string>
+    <string name="eredivisie">Eredivisie</string>
+    <string name="ligue1">Ligue 1</string>
+    <string name="ligue2">Ligue 2</string>
+    <string name="primeiraliga">Primeira Liga</string>
     <string name="premierleague">Premier League</string>
     <string name="primeradivison">Primera Division</string>
+    <string name="segundaadivison">Segunda Division</string>
     <string name="seriaa">Serie A</string>
-    <string name="matchday_text">Match day</string>
-    <string name="group_stage_text">Group stages</string>
-    <string name="first_knockout_round">First knockout round</string>
+    <string name="matchday_text">Match Day</string>
+    <string name="group_stage_text">Group Stages : Matchday </string>
+    <string name="first_knockout_round">First Knockout Round</string>
     <string name="quarter_final">Quarter Final</string>
     <string name="semi_final">Semi Final</string>
     <string name="final_text">Final</string>
-    <string name="share_text">Share</string>
-    <string name="about">About</string>
+    <string name="score_divider"> - </string>
+    <string name="unknown_league">Unknown league - please report</string>
+    <string name="share_text" translatable="false">Share</string>
+    <string name="about" translatable="false">About</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="about_text">
         This Application get Football Matches Score for the Premier League,Seria A,Bundesliga,Primera Division
@@ -40,5 +48,7 @@
     <string name="empty_view_text">This is the empty view</string>
 
     <!-- Content descriptions -->
-    <string name="cs_share">Share</string>
+    <string name="cs_share" translatable="false">Share Button</string>
+    <string name="home_team_crest" translatable="false">Home Team Crest</string>
+    <string name="away_team_crest" translatable="false">Away Team Crest</string>
 </resources>
