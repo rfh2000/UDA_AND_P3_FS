@@ -31,9 +31,6 @@ public class DatabaseContract {
         public static final String MATCH_ID = "match_id";
         public static final String MATCH_DAY = "match_day";
 
-        //public static Uri SCORES_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH)
-                //.build();
-
         public static final Uri CONTENT_URI = Uri.withAppendedPath(DatabaseContract.BASE_CONTENT_URI, SCORES_TABLE);
 
         //Types

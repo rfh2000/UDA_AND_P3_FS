@@ -18,6 +18,7 @@ public class Utilities {
     public static final int SERIE_A = 401;
     public static final int EREDIVISIE= 404;
     public static final int PRIMEIRA_LIGA = 402;
+    public static final int BUNDESLIGA3 = 403;
     public static final int CHAMPIONS_LEAGUE = 405;
 
     public static String getLeague(Context c, int league_num) {
@@ -31,6 +32,7 @@ public class Utilities {
             case SEGUNDA_DIVISION : return r.getString(R.string.segundaadivison);
             case BUNDESLIGA : return r.getString(R.string.bundesliga);
             case BUNDESLIGA2 : return r.getString(R.string.bundesliga2);
+            case BUNDESLIGA3 : return r.getString(R.string.bundesliga3);
             case LIGUE1 : return r.getString(R.string.ligue1);
             case LIGUE2 : return r.getString(R.string.ligue2);
             case EREDIVISIE : return r.getString(R.string.eredivisie);
@@ -62,11 +64,9 @@ public class Utilities {
     public static String getScores(Context c, int home_goals,int awaygoals) {
         Resources r = c.getResources();
         if(home_goals < 0 || awaygoals < 0) {
-            //return " - ";
             return r.getString(R.string.score_divider);
         }
         else {
-            //return String.valueOf(home_goals) + " - " + String.valueOf(awaygoals);
             return String.valueOf(home_goals) + r.getString(R.string.score_divider) + String.valueOf(awaygoals);
         }
     }

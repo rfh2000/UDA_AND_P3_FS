@@ -30,7 +30,7 @@
             android:name=".AboutActivity"
             android:label="About"
             android:parentActivityName=".MainActivity" >
-            <meta-data
+            <meta-mCursor
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="barqsoft.footballscores.MainActivity" />
         </activity>
@@ -41,7 +41,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.ACTION_DATA_UPDATED" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-mCursor android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_info" />
         </receiver>
 
@@ -57,7 +57,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.ACTION_DATA_UPDATED" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-mCursor android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_info" />
         </receiver>
 

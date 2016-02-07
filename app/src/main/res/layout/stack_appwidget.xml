@@ -8,22 +8,21 @@
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/stack_list"
-        android:gravity="start"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="start"
         android:loopViews="true"
         android:scrollbars="vertical"
-        tools:listitem="@layout/stack_widget_item"/>
+        tools:listitem="@layout/stack_widget_item" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:background="@drawable/widget_item_background"
+        android:gravity="center"
         android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:text="Something"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </FrameLayout>

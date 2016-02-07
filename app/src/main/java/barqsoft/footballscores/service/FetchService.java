@@ -33,12 +33,13 @@ public class FetchService extends IntentService {
 
     // Check variable/method names further in this class
 
-    public static final String LOG_TAG = "FetchService";
     public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
 
     // These are the arguments for fetching matchdays from the API
     static final String FUTURE_DAYS = "n3";
     static final String PAST_DAYS = "p2";
+
+    static final String LOG_TAG = "FetchService";
 
     public FetchService() {
         super("FetchService");

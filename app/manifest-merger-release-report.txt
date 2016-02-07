@@ -61,7 +61,7 @@ ADDED from AndroidManifest.xml:28:9
 		ADDED from AndroidManifest.xml:31:13
 	android:name
 		ADDED from AndroidManifest.xml:29:13
-meta-data#android.support.PARENT_ACTIVITY
+meta-mCursor#android.support.PARENT_ACTIVITY
 ADDED from AndroidManifest.xml:32:13
 	android:name
 		ADDED from AndroidManifest.xml:33:17

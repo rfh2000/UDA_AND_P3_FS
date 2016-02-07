@@ -9,22 +9,22 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
-    public static int selectedMatchId;
-    public static int currentFragment = 2;
-    private PagerFragment myMain;
-    public static final String LOG_TAG = "MainActivity";
-    private static final String SAVE_TAG = "Save Test";
+    public static int mSelectedMatchId;
+    public static int mCurrentFragment = 2;
+    private PagerFragment mPagerFragment;
+
+    private static final String PAGER_TAG = "Pager_Current";
+    private static final String MATCH_TAG = "Match_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(LOG_TAG, "Reached MainActivity onCreate");
         if (savedInstanceState == null) {
-            myMain = new PagerFragment();
+            mPagerFragment = new PagerFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, myMain)
+                    .add(R.id.container, mPagerFragment)
                     .commit();
         }
     }
@@ -57,24 +57,18 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-        Log.v(SAVE_TAG,"will save");
-        Log.v(SAVE_TAG,"fragment: "+String.valueOf(myMain.mPagerHandler.getCurrentItem()));
-        Log.v(SAVE_TAG,"selected id: "+ selectedMatchId);
-        outState.putInt("Pager_Current", myMain.mPagerHandler.getCurrentItem());
-        outState.putInt("Selected_match", selectedMatchId);
-        getSupportFragmentManager().putFragment(outState,"myMain", myMain);
+        outState.putInt(PAGER_TAG, mPagerFragment.mPagerHandler.getCurrentItem());
+        outState.putInt(MATCH_TAG, mSelectedMatchId);
+        getSupportFragmentManager().putFragment(outState, "mPagerFragment", mPagerFragment);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
-        Log.v(SAVE_TAG,"will retrive");
-        Log.v(SAVE_TAG,"fragment: "+String.valueOf(savedInstanceState.getInt("Pager_Current")));
-        Log.v(SAVE_TAG,"selected id: "+savedInstanceState.getInt("Selected_match"));
-        currentFragment = savedInstanceState.getInt("Pager_Current");
-        selectedMatchId = savedInstanceState.getInt("Selected_match");
-        myMain = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState,"myMain");
+        mCurrentFragment = savedInstanceState.getInt(PAGER_TAG);
+        mSelectedMatchId = savedInstanceState.getInt(MATCH_TAG);
+        mPagerFragment = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mPagerFragment");
         super.onRestoreInstanceState(savedInstanceState);
     }
 }

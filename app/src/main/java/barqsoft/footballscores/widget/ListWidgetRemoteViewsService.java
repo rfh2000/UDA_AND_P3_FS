@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.os.Binder;
 import android.os.Build;
 import android.text.format.Time;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -32,16 +31,13 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
 
-
-            private Cursor data = null;
-            private static final int NUM_DAYS = 5;
-            private String[] searchDate = new String[NUM_DAYS];
-            private String currentDayName;
+            private Cursor mCursor = null;
             private int mCount;
-            private boolean hasResultHeader = false;
-            private static final int manchesterUnited = R.drawable.manchester_united;
-            private List<String> matchList;
-            static final int INDEX_SCORES_ID = 0;
+            private String[] mSearchDate = new String[NUM_DAYS];
+            private List<String> mMatchList;
+
+            // The number of days/pages we will be loading
+            private static final int NUM_DAYS = 5;
 
             @Override
             public void onCreate() {
@@ -50,68 +46,43 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public void onDataSetChanged() {
-//                if (data != null) {
-//                    data.close();
-//                }
+                if (mCursor != null) {
+                    mCursor.close();
+                }
                 // This method is called by the app hosting the widget (e.g., the launcher)
                 // However, our ContentProvider is not exported so it doesn't have access to the
-                // data. Therefore we need to clear (and finally restore) the calling identity so
+                // mCursor. Therefore we need to clear (and finally restore) the calling identity so
                 // that calls use our process and permission
 
                 final long identityToken = Binder.clearCallingIdentity();
-                matchList = queryData();
-                mCount = matchList.size();
+                mMatchList = queryData();
+                mCount = mMatchList.size();
                 Binder.restoreCallingIdentity(identityToken);
             }
 
             @Override
             public void onDestroy() {
-//                if (data != null) {
-//                    data.close();
-//                    data = null;
-//                }
-                matchList.clear();
+                if (mCursor != null) {
+                    mCursor.close();
+                    mCursor = null;
+                }
+                mMatchList.clear();
             }
 
             @Override
             public int getCount() {
-                //return data == null ? 0 : data.getCount();
                 return mCount;
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
-
-//                if (position == AdapterView.INVALID_POSITION ||
-//                        data == null || !data.moveToPosition(position)) {
-//                    Log.v(LOG_TAG, "Returned null after position " + position);
-//                    return null;
-//                }
-
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.stack_widget_item);
-
-                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                //    setRemoteContentDescription(views, description);
-                //}
-                views.setTextViewText(R.id.widget_item, matchList.get(position));
-//                if (matchList.get(position).equals("UPCOMING FIXTURES") || matchList.get(position).equals("PREVIOUS RESULTS")) {
-//                    views.setTextColor(R.id.widget_item, getResources().getColor(R.color.orange07));
-//
-//                }
-                final Intent fillInIntent = new Intent();
+                views.setTextViewText(R.id.widget_item, mMatchList.get(position));
                 Intent launchIntent = new Intent(getApplicationContext(), MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, launchIntent, 0);
                 views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-
-                //fillInIntent.setData(weatherUri);
-                //views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
                 views.setOnClickFillInIntent(R.id.widget_item, launchIntent);
                 return views;
-            }
-
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-            private void setRemoteContentDescription(RemoteViews views, String description) {
-                //views.setContentDescription(R.id.widget_icon, description);
             }
 
             @Override
@@ -126,8 +97,6 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
-//                if (data.moveToPosition(position))
-//                    return data.getLong(INDEX_SCORES_ID);
                 return position;
             }
 
@@ -137,104 +106,47 @@ public class ListWidgetRemoteViewsService extends RemoteViewsService {
             }
 
             private List<String> queryData() {
-
                 List<String> matchList = new ArrayList<>();
-
                 for (int i = 0;i < NUM_DAYS;i++)
                 {
                     Date tmpDate = new Date(System.currentTimeMillis()+((i-2)*86400000));
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    searchDate[i] = simpleDateFormat.format(tmpDate);
+                    mSearchDate[i] = simpleDateFormat.format(tmpDate);
                 }
 
-                //matchList.add("UPCOMING FIXTURES");
-                for (int i = searchDate.length-1 ; i > -1 ; i--){
+                for (int i = mSearchDate.length-1 ; i > -1 ; i--){
                     String[] tmpDate = new String[1];
-                    tmpDate[0] = searchDate[i];
-                    data = getContentResolver().query(
+                    tmpDate[0] = mSearchDate[i];
+                    mCursor = getContentResolver().query(
                             DatabaseContract.ScoresTable.buildScoreWithDate(),
                             null,
                             null,
                             tmpDate,
                             null);
 
-                    //Log.v(LOG_TAG, "The date is " + tmpDate[0]);
-                    //Date anotherDate = new Date(System.currentTimeMillis()+((i-2)*86400000));
-                    //Log.v(LOG_TAG, "The day name is " + getDayName(getApplicationContext(), System.currentTimeMillis()+((i-2)*86400000)));
-
                     String dayName = getDayName(getApplicationContext(), System.currentTimeMillis()+((i-2)*86400000));
                     matchList.add(dayName);
 
-                    if (data != null && data.getCount() > 0) {
-                        if (data.moveToFirst()) {
+                    if (mCursor != null && mCursor.getCount() > 0) {
+                        if (mCursor.moveToFirst()) {
                             do {
                                 mCount++;
                                 String midString = "";
-                                if (data.getString(6).equals("-1") && data.getString(7).equals("-1")){
+                                if (mCursor.getString(6).equals("-1") && mCursor.getString(7).equals("-1")){
                                     midString = "v";
                                 } else {
-//                                    if (!hasResultHeader) {
-//                                        matchList.add("PREVIOUS RESULTS");
-//                                        hasResultHeader = true;
-//                                        mCount++;
-//                                    }
-//                                    if (dayName != currentDayName) {
-//                                        switch (dayName) {
-//                                            case "Monday":
-//                                                matchList.add("Monday");
-//                                                currentDayName = "Monday";
-//                                                break;
-//                                            case "Tuesday":
-//                                                matchList.add("Tuesday");
-//                                                currentDayName = "Tuesday";
-//                                                break;
-//                                            case "Wednesday":
-//                                                matchList.add("Wednesday");
-//                                                currentDayName = "Wednesday";
-//                                                break;
-//                                            case "Thursday":
-//                                                matchList.add("Thursday");
-//                                                currentDayName = "Thursday";
-//                                                break;
-//                                            case "Friday":
-//                                                matchList.add("Friday");
-//                                                currentDayName = "Friday";
-//                                                break;
-//                                            case "Saturday":
-//                                                matchList.add("Saturday");
-//                                                currentDayName = "Saturday";
-//                                                break;
-//                                            case "Sunday":
-//                                                matchList.add("Sunday");
-//                                                currentDayName = "Sunday";
-//                                                break;
-//                                            case "Yesterday":
-//                                                matchList.add("Yesterday");
-//                                                currentDayName = "Yesterday";
-//                                                break;
-//                                            case "Today":
-//                                                matchList.add("Today");
-//                                                currentDayName = "Today";
-//                                                break;
-//                                            case "Tomorrow":
-//                                                matchList.add("Tomorrow");
-//                                                currentDayName = "Tomorrow";
-//                                                break;
-//                                            default:
-//                                                break;
-//                                        }
-//                                    }
-                                    midString =  data.getString(6) + " - " + data.getString(7);
+
+                                    midString =  mCursor.getString(6) + " - " + mCursor.getString(7);
                                 }
-                                String s = data.getString(3) +
+                                String s = mCursor.getString(3) +
                                         " " +
                                         midString +
-                                        " " + data.getString(4);
+                                        " " + mCursor.getString(4);
                                 matchList.add(s);
-                            } while (data.moveToNext());
+                            } while (mCursor.moveToNext());
                         }
                     }
-                    data.close();
+                    mCursor.close();
                 }
                 return matchList;
             }
